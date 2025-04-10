@@ -14,7 +14,11 @@ function App() {
 
   return (
     <>
-      Ciao sono in App
+      <h1>In proiezione al cinema!</h1>
+      {movieList.map((movie, index) => <article key={index}>
+        <h3>{movie.title}</h3>
+        <span>Genere: <em>{movie.genre}</em></span>
+      </article>)}
     </>
   )
 }
