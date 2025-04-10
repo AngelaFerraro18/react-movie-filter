@@ -24,25 +24,23 @@ function App() {
   //salvo in una variabile il valore di partenza per il campo di input aggiunto per la ricerca per titolo
   const [writeField, setWriteField] = useState('');
 
-  //vado ad usare useEffect per filtrare la mia lista
+  const [newMovie, setNewMovie] = useState('');
+
+  //vado ad usare useEffect per filtrare la mia lista sia come genere che per titolo
   useEffect(() => {
 
-    //se la mia lista sarà vuota, allora mostrerò tutta la lista completa
-    if (moviesList === '') {
-      setFilteredMovie(movies);
-    } else {
-      //altrimenti vado a filtrare con filter e salvo il risultato della ricerca in una variabile: resultMovie
-      const resultMovie = movies.filter(movie => movie.genre === moviesList);
-
-      //vado ad usare la funzione per vedere in tempo reale la modifica all'UI il risultato della ricerca
-      setFilteredMovie(resultMovie);
-      console.log(resultMovie);
-    }
-  }, [moviesList]) //=> come dipendenza inserisco il valore movieList, che cambierà ogni volta che verrà selezionato un genere e di conseguenza andrà a influire su ciò che vedrò in pagina
-
-  useEffect(() => {
     //salvo in una variabile result il valore del mio array di partenza
     let result = movies;
+
+    //se la mia lista sarà vuota, allora mostrerò tutta la lista completa
+    if (moviesList !== '') {
+      //altrimenti vado a filtrare con filter e salvo il risultato della ricerca in una variabile: resultMovie
+      result = result.filter(movie => movie.genre === moviesList);
+
+      //vado ad usare la funzione per vedere in tempo reale la modifica all'UI il risultato della ricerca
+      setFilteredMovie(result);
+      console.log(result);
+    }
 
     //mi chiedo se il mio campo di input è diverso da una stringa vuota e uso il metodo trim() per eliminare eventuali spazi presenti nella stringa scritta, se il risultato è true allora procedo con la ricerca
     if (writeField.trim() !== '') {
@@ -59,7 +57,21 @@ function App() {
     }
     //di conseguenza andrò a mostrare il risultato, se avrò un match vedrò gli elementi che corrispondono alla ricerca, altrimenti vedrò l'intera lista
     setFilteredMovie(result);
-  }, [writeField, moviesList])
+
+  }, [moviesList, writeField]) //=> come dipendenza inserisco il valore movieList, che cambierà ogni volta che verrà selezionato un genere e di conseguenza andrà a influire su ciò che vedrò in pagina
+
+
+  // function addNewMovie(event) {
+  //   event.preventDefault();
+
+  //   const newMovieElement = {
+  //     title: newMovie,
+  //     genre: 'Azione'
+  //   }
+
+  //   setMoviesList([...movies, newMovieElement])
+  //   setNewMovie('');
+  // }
 
   return (
     <>
@@ -79,6 +91,11 @@ function App() {
         <h3>{movie.title}</h3>
         <span>Genere: <em>{movie.genre}</em></span>
       </article>)}
+
+      {/* <form onSubmit={addNewMovie}>
+        <input type="text" value={newMovie} onChange={e => setNewMovie(e.target.value)} />
+        <button>Aggiungi un nuovo film</button>
+      </form> */}
     </>
   )
 }
